@@ -55,7 +55,7 @@ export const SelfValidating = (Form: FormComponent) =>
                 this.customFields.count === 0
                 && this.customFields.valid
                 && this.lastSubmit
-                && this.lastSubmit.target.validity.valid
+                && this.lastSubmit.target.checkValidity()
             ) {
                 this.props.onSubmit(this.lastSubmit);
             }
