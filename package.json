@@ -1,6 +1,6 @@
 {
   "name": "self-validation-hoc",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Minimal and sensible form validation for React apps",
   "main": "lib/index.js",
   "author": "Luka Zitnik <luka.zitnik@gmail.com>",
