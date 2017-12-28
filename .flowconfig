@@ -1,0 +1,11 @@
+[ignore]
+*.spec.js
+
+[include]
+
+[libs]
+
+[lints]
+
+[options]
+suppress_comment= \\(.\\|\n\\)*\\flow-disable-next-line
