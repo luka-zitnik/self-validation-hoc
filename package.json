@@ -1,10 +1,12 @@
 {
   "name": "self-validation-hoc",
   "version": "1.0.1",
-  "description": "Minimal and sensible form validation for React apps",
+  "description": "A minimal and sensible form validation library for React apps",
   "main": "lib/index.js",
   "author": "Luka Zitnik <luka.zitnik@gmail.com>",
   "license": "MIT",
+  "repository": "github:luka-zitnik/self-validation-hoc",
+  "bugs": "https://github.com/luka-zitnik/self-validation-hoc/issues",
   "scripts": {
     "flow": "flow",
     "build": "NODE_ENV=development babel ./src/index.jsx -o ./lib/index.js -s",
@@ -39,6 +41,7 @@
     "react-dom": "^16.2.0"
   },
   "jest": {
-    "setupTestFrameworkScriptFile": "<rootDir>src/setupTests.js"
+    "setupTestFrameworkScriptFile": "<rootDir>src/setupTests.js",
+    "collectCoverage": true
   }
 }

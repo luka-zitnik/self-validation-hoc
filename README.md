@@ -1,8 +1,11 @@
 # SelfValidationHoc
 
-A minimal and sensible form validation component for React apps.
+A minimal and sensible form validation library for React apps.
 
-## Requirements for This Component
+[![Build Status](https://travis-ci.org/luka-zitnik/self-validation-hoc.svg?branch=master)](https://travis-ci.org/luka-zitnik/self-validation-hoc)
+[![Code Coverage](https://codecov.io/gh/luka-zitnik/self-validation-hoc/branch/master/graph/badge.svg)](https://codecov.io/gh/luka-zitnik/self-validation-hoc)
+
+## Requirements for This Library
 
 - Adds validation to **exiting forms**
 - Reduces interaction with the form to a **bare minimum**
