@@ -21,27 +21,31 @@ A minimal and sensible form validation library for React apps.
 - For other custom fields, it exposes a simple API for them to report their validity to their form
 - Always cancels submit event, assuming no one will ever want a submit to navigate off the page
 
-## Usage Examples
+## Usage
+
+This library consists of three higher order components (HOCs). `SelfValidating` HOC runs validity checks on `submit` event of the provided *form component*, which has to be built on top of the standard form, and calls `onSubmit` handler if the form is valid. `Touchable` and `TouchableCustom` manage a couple of CSS classes, `touched` and `invalid`, of two types of provided *form field components*.
 
 ### Standard Fields
 
 You only need to pass your form through the `SelfValidating` function, and optionally your fields through the `Touchable` function.
 
-```js
+```diff
 import React from 'react';
 import {FormGroup, FormControl, ControlLabel, HelpBlock, Button} from 'react-bootstrap';
 
-import {SelfValidating, Touchable} from './index';
-
-const SelfValidatingStandardForm = SelfValidating(props => (
-    <form {...props} />
-));
-const TouchableFormControl = Touchable(FormControl);
-
++import {SelfValidating, Touchable} from './index';
++
++const SelfValidatingStandardForm = SelfValidating(props => (
++    <form {...props} />
++));
++const TouchableFormControl = Touchable(FormControl);
++
 const Page = () => (
-    <SelfValidatingStandardForm onSubmit={() => { alert('sumbitted'); }}>
+-    <form onSubmit={() => { alert('sumbitted'); }}>
++    <SelfValidatingStandardForm onSubmit={() => { alert('sumbitted'); }}>
         <FormGroup controlId="short-text">
-            <TouchableFormControl
+-            <FormControl
++            <TouchableFormControl
                 required
             />
             <ControlLabel>
@@ -50,7 +54,8 @@ const Page = () => (
             <HelpBlock>This field is required</HelpBlock>
         </FormGroup>
         <Button type="submit">Submit</Button>
-    </SelfValidatingStandardForm>
+-    </form>
++    </SelfValidatingStandardForm>
 );
 
 export default Page;
@@ -60,26 +65,26 @@ export default Page;
 
 You first need to make a few adaptations to your custom field.
 
-```js
+```diff
 // CustomField.jsx
 
 import React from 'react';
 
 export default class CustomField extends React.Component {
     static defaultProps = {
-        onValidityChange: () => {},
-        onEndCheckValidity: () => {},
-        endCheckValidity: false,
++        onValidityChange: () => {},
++        onEndCheckValidity: () => {},
++        endCheckValidity: false,
     };
     
     componentWillReceiveProps(nextProps) {
-        if (nextProps.endCheckValidity) {
-            nextProps.onEndCheckValidity(true); // or false
-        }
++        if (nextProps.endCheckValidity) {
++            nextProps.onEndCheckValidity(true); // or false
++        }
     }
     
     handleChange() {
-        this.props.onValidityChange(true); // or false
++        this.props.onValidityChange(true); // or false
     }
     
     render() {}
@@ -92,20 +97,22 @@ You then pass your `CustomField` through the `TouchableCustom` function.
 
 Unlike with standard fields, where using `Touchable` is optional, you have to pass your custom field through `TouchableCustom` in order for self-validating form to determine the validity of the field.
 
-```js
+```diff
 import React from 'react';
 
 import CustomField from './CustomField';
 
-const SelfValidatingStandardForm = SelfValidating(props => (
-    <form {...props} />
-));
-const TouchableCustomField = TouchableCustom(CustomField);
-
++const SelfValidatingStandardForm = SelfValidating(props => (
++    <form {...props} />
++));
++const TouchableCustomField = TouchableCustom(CustomField);
++
 const Page = () => (
-    <SelfValidatingStandardForm onSubmit={() => { alert('sumbitted'); }}>
+-    <form onSubmit={() => { alert('sumbitted'); }}>
++    <SelfValidatingStandardForm onSubmit={() => { alert('sumbitted'); }}>
         <div className="form-group">
-            <TouchableCustomField
+-            <CustomField
++            <TouchableCustomField
                 id="custom-field"
                 required
             />
@@ -115,7 +122,8 @@ const Page = () => (
             <div className="help-block">This field is required</div>
         </div>
         <button>Submit</button>
-    </SelfValidatingStandardForm>
+-    </form>
++    </SelfValidatingStandardForm>
 );
 
 export default Page;
