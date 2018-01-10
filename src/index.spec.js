@@ -111,4 +111,33 @@ describe('SelfValidationHoc', () => {
         wrapper.find('input').simulate('invalid');
         expect(wrapper.state('touched')).toBe(true);
     });
+
+    it('should not break on text sibling', () => {
+        const wrapper = mount(
+            <SelfValidatingForm>
+                <TouchableInput />
+                text
+            </SelfValidatingForm>,
+        );
+    });
+
+    it('should not break on null sibling', () => {
+        console.log('breaking test')
+        const wrapper = mount(
+            <SelfValidatingForm>
+                <TouchableInput />
+                {null}
+            </SelfValidatingForm>,
+        );
+    });
+
+    it('should not break on false sibling', () => {
+        console.log('breaking test')
+        const wrapper = mount(
+            <SelfValidatingForm>
+                <TouchableInput />
+                {false}
+            </SelfValidatingForm>,
+        );
+    });
 });

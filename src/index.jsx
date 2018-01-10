@@ -63,8 +63,8 @@ export const SelfValidating = (Form: FormComponent) =>
 
         render() {
             let count = 0;
-            const children = Children.deepMap(this.props.children, (child) => {
-                if (child.type.name === 'TouchableCustomField') {
+            const children = Children.deepMap(React.Children.toArray(this.props.children), (child) => {
+                if (child.type && child.type.name === 'TouchableCustomField') {
                     count++;
                     return React.cloneElement(child, {
                         endCheckValidity: this.state.endCheckValidity,
