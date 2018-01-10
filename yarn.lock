@@ -5781,10 +5781,6 @@ react-bootstrap@^0.31.5:
     uncontrollable "^4.1.0"
     warning "^3.0.0"
 
-react-children-utilities@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/react-children-utilities/-/react-children-utilities-0.3.2.tgz#2d2b7ac4d93234ca04584a6a18c11d40fd681066"
-
 react-docgen@^2.15.0:
   version "2.20.0"
   resolved "https://registry.yarnpkg.com/react-docgen/-/react-docgen-2.20.0.tgz#41a6da483a34a4aaed041a9909f5e61864d681cb"

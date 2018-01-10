@@ -3,7 +3,6 @@
 
 import React from 'react';
 import classnames from 'classnames';
-import Children from 'react-children-utilities';
 
 import type {
     FormComponent,
@@ -14,6 +13,21 @@ import type {
     TouchableCustomFieldProps,
     TouchableFieldState,
 } from './index.types';
+
+function deepMap(children, deepMapFn) {
+    return React.Children
+    .map(children, (child) => {
+        if (child && child.props && child.props.children
+            && typeof child.props.children === 'object') {
+                // Clone the child that has children and map them too
+                return deepMapFn(React.cloneElement(child, {
+                    ...child.props,
+                    children: deepMap(child.props.children, deepMapFn),
+                }));
+            }
+            return deepMapFn(child);
+        });
+}
 
 export const SelfValidating = (Form: FormComponent) =>
     class SelfValidatingForm extends React.Component<SelfValidatingFormProps, {
@@ -63,8 +77,8 @@ export const SelfValidating = (Form: FormComponent) =>
 
         render() {
             let count = 0;
-            const children = Children.deepMap(React.Children.toArray(this.props.children), (child) => {
-                if (child.type && child.type.name === 'TouchableCustomField') {
+            const children = deepMap(this.props.children, (child) => {
+                if (child && child.type && child.type.name === 'TouchableCustomField') {
                     count++;
                     return React.cloneElement(child, {
                         endCheckValidity: this.state.endCheckValidity,

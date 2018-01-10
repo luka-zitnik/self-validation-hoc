@@ -1,6 +1,6 @@
 {
   "name": "self-validation-hoc",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A minimal and sensible form validation library for React apps",
   "main": "lib/index.js",
   "author": "Luka Zitnik <luka.zitnik@gmail.com>",
@@ -14,8 +14,7 @@
     "test": "jest --env=jsdom"
   },
   "dependencies": {
-    "classnames": "^2.2.5",
-    "react-children-utilities": "^0.3.2"
+    "classnames": "^2.2.5"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.3.1",
