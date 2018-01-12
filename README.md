@@ -136,7 +136,7 @@ export default Page;
 ```diff
 -const TouchableFormControl = Touchable()(FormControl);
 +const TouchableFormControl = Touchable({
-+    touched: 'input--touched',
-+    invalid: 'input--invalid',
++    touchedClassName: 'input--touched',
++    invalidClassName: 'input--invalid',
 +})(FormControl);
 ```
