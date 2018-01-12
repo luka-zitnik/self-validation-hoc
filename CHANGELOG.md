@@ -1,5 +1,10 @@
 # SelfValidationHoc's Changelog
 
+## 2.0.0
+
+- Make class names configurable (caused API change)
+- Fix undetected validity of value props in standard fields
+
 ## 1.0.4
 
 - Enable usage in node by transpiling es6 features

@@ -9,7 +9,11 @@ describe('SelfValidationHoc', () => {
 
     beforeEach(() => {
         SelfValidatingForm = SelfValidating(props => <form {...props} />);
-        TouchableInput = Touchable(props => <input {...props} />);
+        TouchableInput = Touchable()(props => {
+            const p = {...props};
+            delete p.inputRef;
+            return <input {...p} ref={input => { props.inputRef(input); }} />;
+        });
     });
 
     it('should call onInvalid when form is submitted', () => {

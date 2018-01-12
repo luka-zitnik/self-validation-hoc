@@ -12,6 +12,7 @@ import type {
     CustomFieldComponent,
     TouchableCustomFieldProps,
     TouchableFieldState,
+    Config,
 } from './index.types';
 
 function deepMap(children, deepMapFn) {
@@ -101,18 +102,26 @@ export const SelfValidating = (Form: FormComponent) =>
         }
     };
 
+const defaultConfig = {
+    touchedClassName: 'touched',
+    invalidClassName: 'invalid',
+};
+
 /**
  * For standard fields or those that are built on top of them
  */
-export const Touchable = (Field: FieldComponent) =>
+export const Touchable = (config: Config = defaultConfig) => (Field: FieldComponent) =>
     class TouchableField extends React.Component<TouchableFieldProps, TouchableFieldState> {
         static defaultProps = {
             onChange: () => {},
             onInvalid: () => {},
+            inputRef: () => {},
         };
 
+        input: HTMLInputElement;
         handleChange: (SyntheticInputEvent<HTMLInputElement>) => void;
         handleInvalid: (SyntheticEvent<HTMLInputElement>) => void;
+        handleInputRef: (HTMLInputElement) => void;
 
         constructor(props: TouchableFieldProps) {
             super(props);
@@ -122,6 +131,13 @@ export const Touchable = (Field: FieldComponent) =>
             };
             this.handleChange = this.handleChange.bind(this);
             this.handleInvalid = this.handleInvalid.bind(this);
+            this.handleInputRef = this.handleInputRef.bind(this);
+        }
+
+        componentDidUpdate() {
+            if (this.state.touched && this.input && this.input.validity && this.state.invalid === this.input.validity.valid) {
+                this.setState({invalid: !this.input.validity.valid});
+            }
         }
 
         handleChange(ev: SyntheticInputEvent<HTMLInputElement>) {
@@ -134,16 +150,22 @@ export const Touchable = (Field: FieldComponent) =>
             this.props.onInvalid(ev);
         }
 
+        handleInputRef(input: HTMLInputElement) {
+            this.input = input;
+            this.props.inputRef(input);
+        }
+
         render() {
             return (
                 <Field
                     {...this.props}
                     className={classnames(this.props.className, {
-                        'touched': this.state.touched,
-                        'invalid': this.state.invalid,
+                        [config.touchedClassName || defaultConfig.touchedClassName]: this.state.touched,
+                        [config.invalidClassName || defaultConfig.invalidClassName]: this.state.invalid,
                     })}
                     onChange={this.handleChange}
                     onInvalid={this.handleInvalid}
+                    inputRef={this.handleInputRef}
                 />
             );
         }
@@ -153,7 +175,7 @@ export const Touchable = (Field: FieldComponent) =>
  * For fields that don't fire `invalid` events or their `onChange` property does
  * not pass `change` events
  */
-export const TouchableCustom = (Field: CustomFieldComponent) =>
+export const TouchableCustom = (config: Config = defaultConfig) => (Field: CustomFieldComponent) =>
     class TouchableCustomField extends React.Component<
         TouchableCustomFieldProps, TouchableFieldState
     > {
@@ -179,7 +201,7 @@ export const TouchableCustom = (Field: CustomFieldComponent) =>
 
         handleValidityChange(valid: boolean) {
             this.setState({touched: true, invalid: !valid});
-            if (this.state.invalid !== !valid) { // Assuming state is not updated immediately
+            if (this.state.invalid === valid) { // Assuming state is not updated immediately
                 this.props.onValidityChange(valid);
             }
         }
@@ -197,8 +219,8 @@ export const TouchableCustom = (Field: CustomFieldComponent) =>
                 <Field
                     {...this.props}
                     className={classnames(this.props.className, {
-                        'touched': this.state.touched,
-                        'invalid': this.state.invalid,
+                        [config.touchedClassName || defaultConfig.touchedClassName]: this.state.touched,
+                        [config.invalidClassName || defaultConfig.invalidClassName]: this.state.invalid,
                     })}
                     onValidityChange={this.handleValidityChange}
                     onEndCheckValidity={this.handleEndCheckValidity}
@@ -208,4 +230,4 @@ export const TouchableCustom = (Field: CustomFieldComponent) =>
         }
     };
 
-export default {SelfValidating, Touchable};
+export default {SelfValidating, Touchable, TouchableCustom};

@@ -4,22 +4,33 @@ import React from 'react';
 import {Form, FormGroup, FormControl, ControlLabel, HelpBlock, Button, Checkbox} from 'react-bootstrap';
 
 import {storiesOf} from '@storybook/react';
-import {withInfo} from '@storybook/addon-info';
 import {action} from '@storybook/addon-actions';
 
 import {SelfValidating, Touchable, TouchableCustom} from './index';
 
 const stories = storiesOf('Self-Validating Form', module);
 const SelfValidatingBootstrapForm = SelfValidating(Form);
-const TouchableFormControl = Touchable(FormControl);
-const TouchableCheckbox = Touchable(Checkbox);
+const TouchableFormControl = Touchable()(FormControl);
+const TouchableCheckbox = Touchable()(Checkbox);
 const SelfValidatingStandardForm = SelfValidating(props => (
     <form {...props} />
 ));
-const TouchableSelect = Touchable(props => <select {...props} />);
-const TouchableInput = Touchable(props => <input {...props} />);
-const TouchableTextarea = Touchable(props => <textarea {...props} />);
-const TouchableStandardCheckbox = Touchable(props => (
+const TouchableSelect = Touchable()(props => {
+    const p = {...props};
+    delete p.inputRef;
+    return <select {...p} ref={input => { props.inputRef(input); }} />;
+});
+const TouchableInput = Touchable()(props => {
+    const p = {...props};
+    delete p.inputRef;
+    return <input {...p} ref={input => { props.inputRef(input); }} />;
+});
+const TouchableTextarea = Touchable()(props => {
+    const p = {...props};
+    delete p.inputRef;
+    return <textarea {...p} ref={input => { props.inputRef(input); }} />;
+});
+const TouchableStandardCheckbox = Touchable()(props => (
     <div className={props.className}>
         <label htmlFor={props.id}>
             <input
@@ -27,14 +38,13 @@ const TouchableStandardCheckbox = Touchable(props => (
                 required={props.required}
                 onChange={props.onChange}
                 onInvalid={props.onInvalid}
+                ref={input => { props.inputRef(input); }}
                 type="checkbox"
             />
             {props.children}
         </label>
     </div>
 ));
-
-// stories.addDecorator((story, context) => withInfo()(story)(context));
 
 stories.add('bootstrap form', () => (
     <SelfValidatingBootstrapForm onSubmit={action('Valid form submitted')}>

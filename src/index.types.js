@@ -20,6 +20,7 @@ export type FieldComponent = ComponentType<{
 export type TouchableFieldProps = Object & {
     onChange: (SyntheticInputEvent<HTMLInputElement>) => void,
     onInvalid: (SyntheticEvent<HTMLInputElement>) => void,
+    inputRef: (HTMLInputElement) => void,
 };
 
 export type CustomFieldComponent = ComponentType<{
@@ -37,4 +38,9 @@ export type TouchableCustomFieldProps = Object & {
 export type TouchableFieldState = {
     touched: boolean,
     invalid: boolean,
+};
+
+export type Config = {
+    touchedClassName: string,
+    invalidClassName: string,
 };
