@@ -23,7 +23,7 @@ A minimal and sensible form validation library for React apps.
 
 ## Usage
 
-This library consists of three higher order components (HOCs). `SelfValidating` HOC runs validity checks on `submit` event of the provided *form component*, which has to be built on top of the standard form, and calls `onSubmit` handler if the form is valid. `Touchable` and `TouchableCustom` manage a couple of CSS classes, `touched` and `invalid`, of two types of provided *form field components*.
+This library consists of three higher order components (HOCs). `SelfValidating` HOC runs validity checks on `submit` event of the provided *form component*, which has to be built on top of the standard form, and calls `onSubmit` handler if the form is valid. Return values of higher order functions, `Touchable` and `TouchableCustom`, manage a couple of CSS classes, `touched` and `invalid`, of provided *form field components*.
 
 ### Standard Fields
 
@@ -38,7 +38,7 @@ import {FormGroup, FormControl, ControlLabel, HelpBlock, Button} from 'react-boo
 +const SelfValidatingStandardForm = SelfValidating(props => (
 +    <form {...props} />
 +));
-+const TouchableFormControl = Touchable(FormControl);
++const TouchableFormControl = Touchable()(FormControl);
 +
 const Page = () => (
 -    <form onSubmit={() => { alert('sumbitted'); }}>
@@ -105,7 +105,7 @@ import CustomField from './CustomField';
 +const SelfValidatingStandardForm = SelfValidating(props => (
 +    <form {...props} />
 +));
-+const TouchableCustomField = TouchableCustom(CustomField);
++const TouchableCustomField = TouchableCustom()(CustomField);
 +
 const Page = () => (
 -    <form onSubmit={() => { alert('sumbitted'); }}>
@@ -127,4 +127,16 @@ const Page = () => (
 );
 
 export default Page;
+```
+
+## Changing CSS Classes
+
+`touched` and `invalid` CSS classes can be renamed to adhere to your project's conventions by passing a configuration object to `Touchable`/`TouchableCustom`.
+
+```diff
+-const TouchableFormControl = Touchable()(FormControl);
++const TouchableFormControl = Touchable({
++    touched: 'input--touched',
++    invalid: 'input--invalid',
++})(FormControl);
 ```

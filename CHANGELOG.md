@@ -1,5 +1,9 @@
 # SelfValidationHoc's Changelog
 
+## 2.0.1
+
+- Docs update
+
 ## 2.0.0
 
 - Make class names configurable (caused API change)
