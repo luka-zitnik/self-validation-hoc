@@ -38,6 +38,9 @@
     "react-bootstrap": "^0.31.5",
     "react-dom": "^16.2.0"
   },
+  "peerDependencies": {
+    "react": "*"
+  },
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>src/setupTests.js",
     "collectCoverage": true
