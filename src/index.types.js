@@ -38,6 +38,7 @@ export type TouchableCustomFieldProps = Object & {
 export type TouchableFieldState = {
     touched: boolean,
     invalid: boolean,
+    value: string,
 };
 
 export type Config = {

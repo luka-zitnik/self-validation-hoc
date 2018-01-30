@@ -128,10 +128,15 @@ export const Touchable = (config: Config = defaultConfig) => (Field: FieldCompon
             this.state = {
                 touched: false,
                 invalid: false,
+                value: props.value || '',
             };
             this.handleChange = this.handleChange.bind(this);
             this.handleInvalid = this.handleInvalid.bind(this);
             this.handleInputRef = this.handleInputRef.bind(this);
+        }
+
+        componentWillReceiveProps(nextProps: TouchableFieldProps) {
+            this.setState({value: nextProps.value});
         }
 
         componentDidUpdate() {
@@ -141,7 +146,7 @@ export const Touchable = (config: Config = defaultConfig) => (Field: FieldCompon
         }
 
         handleChange(ev: SyntheticInputEvent<HTMLInputElement>) {
-            this.setState({touched: true, invalid: !ev.target.validity.valid});
+            this.setState({touched: true, invalid: !ev.target.validity.valid, value: ev.target.value});
             this.props.onChange(ev);
         }
 
@@ -166,6 +171,7 @@ export const Touchable = (config: Config = defaultConfig) => (Field: FieldCompon
                     onChange={this.handleChange}
                     onInvalid={this.handleInvalid}
                     inputRef={this.handleInputRef}
+                    value={this.state.value}
                 />
             );
         }
