@@ -1,5 +1,11 @@
 # SelfValidationHoc's Changelog
 
+## 2.0.2
+
+- Prevent cursor from jumping to the end of input line
+- List react as peer dependency
+- Docs update
+
 ## 2.0.1
 
 - Docs update
