@@ -41,6 +41,11 @@ export type TouchableFieldState = {
     value: string,
 };
 
+export type TouchableCustomFieldState = {
+    touched: boolean,
+    invalid: boolean,
+};
+
 export type Config = {
     touchedClassName: string,
     invalidClassName: string,

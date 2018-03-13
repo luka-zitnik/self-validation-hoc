@@ -1,5 +1,9 @@
 # SelfValidationHoc's Changelog
 
+## 2.0.3
+
+- More proper field matching that supports code minification
+
 ## 2.0.2
 
 - Prevent cursor from jumping to the end of input line

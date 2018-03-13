@@ -12,6 +12,7 @@ import type {
     CustomFieldComponent,
     TouchableCustomFieldProps,
     TouchableFieldState,
+    TouchableCustomFieldState,
     Config,
 } from './index.types';
 
@@ -30,7 +31,11 @@ function deepMap(children, deepMapFn) {
         });
 }
 
-export const SelfValidating = (Form: FormComponent) =>
+function getDisplayName(WrappedComponent) {
+    return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+}
+
+export const SelfValidating = (Form: FormComponent) => {
     class SelfValidatingForm extends React.Component<SelfValidatingFormProps, {
         endCheckValidity: boolean,
     }> {
@@ -79,7 +84,7 @@ export const SelfValidating = (Form: FormComponent) =>
         render() {
             let count = 0;
             const children = deepMap(this.props.children, (child) => {
-                if (child && child.type && child.type.name === 'TouchableCustomField') {
+                if (child && child.type && child.type.displayName && child.type.displayName.search(/^TouchableCustomField(.+)$/) === 0) {
                     count++;
                     return React.cloneElement(child, {
                         endCheckValidity: this.state.endCheckValidity,
@@ -101,6 +106,9 @@ export const SelfValidating = (Form: FormComponent) =>
             );
         }
     };
+    SelfValidatingForm.displayName = `SelfValidatingForm(${getDisplayName(Form)})`;
+    return SelfValidatingForm;
+}
 
 const defaultConfig = {
     touchedClassName: 'touched',
@@ -110,7 +118,7 @@ const defaultConfig = {
 /**
  * For standard fields or those that are built on top of them
  */
-export const Touchable = (config: Config = defaultConfig) => (Field: FieldComponent) =>
+export const Touchable = (config: Config = defaultConfig) => (Field: FieldComponent) => {
     class TouchableField extends React.Component<TouchableFieldProps, TouchableFieldState> {
         static defaultProps = {
             onChange: () => {},
@@ -176,14 +184,17 @@ export const Touchable = (config: Config = defaultConfig) => (Field: FieldCompon
             );
         }
     };
+    TouchableField.displayName = `TouchableField(${getDisplayName(Field)})`;
+    return TouchableField;
+}
 
 /**
  * For fields that don't fire `invalid` events or their `onChange` property does
  * not pass `change` events
  */
-export const TouchableCustom = (config: Config = defaultConfig) => (Field: CustomFieldComponent) =>
+export const TouchableCustom = (config: Config = defaultConfig) => (Field: CustomFieldComponent) => {
     class TouchableCustomField extends React.Component<
-        TouchableCustomFieldProps, TouchableFieldState
+        TouchableCustomFieldProps, TouchableCustomFieldState
     > {
         static defaultProps = {
             onInvalid: () => {},
@@ -235,5 +246,8 @@ export const TouchableCustom = (config: Config = defaultConfig) => (Field: Custo
             );
         }
     };
+    TouchableCustomField.displayName = `TouchableCustomField(${getDisplayName(Field)})`;
+    return TouchableCustomField;
+}
 
 export default {SelfValidating, Touchable, TouchableCustom};
