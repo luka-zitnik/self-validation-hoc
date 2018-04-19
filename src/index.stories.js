@@ -46,6 +46,41 @@ const TouchableStandardCheckbox = Touchable()(props => (
     </div>
 ));
 
+class AtLeastOne extends React.Component {
+    chk1: null;
+    chk2: null;
+
+    constructor(props) {
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.endCheckValidity) {
+            nextProps.onEndCheckValidity(this.isValid());
+        }
+    }
+
+    handleChange() {
+        this.props.onValidityChange(this.isValid());
+    }
+
+    isValid() {
+        return this.chk1 && this.chk2 && (this.chk1.checked || this.chk2.checked);
+    }
+
+    render() {
+        return (
+            <div onChange={this.handleChange}>
+                <input type="checkbox" ref={input => this.chk1 = input} />
+                <input type="checkbox" ref={input => this.chk2 = input} />
+            </div>
+        );
+    }
+}
+
+const TouchableAtLeastOne = TouchableCustom()(AtLeastOne);
+
 stories.add('bootstrap form', () => (
     <SelfValidatingBootstrapForm onSubmit={action('Valid form submitted')}>
         <FormGroup controlId="select">
@@ -97,6 +132,17 @@ stories.add('bootstrap form', () => (
                 A checkbox field
             </ControlLabel>
             <HelpBlock>This field is required</HelpBlock>
+        </FormGroup>
+        <FormGroup controlId="form-group">
+            <TouchableAtLeastOne
+                id="at-least-one"
+                onValidityChange={action('At least one is changed')}
+                onInvalid={action('At least one is invalid')}
+            />
+            <ControlLabel className="">
+                At least one
+            </ControlLabel>
+            <HelpBlock>At least one item must be selected</HelpBlock>
         </FormGroup>
         <Button
             type="submit"
@@ -163,6 +209,17 @@ stories.add('standard form', () => (
                 A checkbox field
             </label>
             <div className="help-block">This field is required</div>
+        </div>
+        <div className="form-group">
+            <TouchableAtLeastOne
+                id="at-least-one"
+                onValidityChange={action('At least one is changed')}
+                onInvalid={action('At least one is invalid')}
+            />
+            <label htmlFor="at-least-one" className="">
+                At least one
+            </label>
+            <div className="help-blok">At least one item must be selected</div>
         </div>
         <button className="btn btn--primary btn--medium">Submit</button>
     </SelfValidatingStandardForm>
