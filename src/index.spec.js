@@ -43,6 +43,39 @@ describe('SelfValidationHoc', () => {
         SelfValidatingForm = SelfValidating(props => <form {...props} />);
     });
 
+    it('should not break on text sibling', () => {
+        mount(
+            <SelfValidatingForm>
+                <div>
+                    <input />
+                    text
+                </div>
+            </SelfValidatingForm>,
+        );
+    });
+
+    it('should not break on null sibling', () => {
+        mount(
+            <SelfValidatingForm>
+                <div>
+                    <input />
+                    {null}
+                </div>
+            </SelfValidatingForm>,
+        );
+    });
+
+    it('should not break on false sibling', () => {
+        mount(
+            <SelfValidatingForm>
+                <div>
+                    <input />
+                    {false}
+                </div>
+            </SelfValidatingForm>,
+        );
+    });
+
     describe('Touchable', () => {
         let TouchableInput;
 
@@ -88,17 +121,17 @@ describe('SelfValidationHoc', () => {
             expect(handleChange).toHaveBeenCalled();
         });
 
-        it('should not mark invalid element as invalid initially', () => {
+        it('should not be marked when invalid as invalid initially', () => {
             const wrapper = mount(<TouchableInput required />);
             expect(wrapper.state('invalid')).toBe(false);
         });
 
-        it('should not mark valid element as invalid initially', () => {
+        it('should not be marked when valid as invalid initially', () => {
             const wrapper = mount(<TouchableInput />);
             expect(wrapper.state('invalid')).toBe(false);
         });
 
-        it('should mark invalid element as invalid on change', () => {
+        it('should be marked when invalid as invalid on change', () => {
             const wrapper = mount(<TouchableInput required />);
             wrapper.find('input').simulate('change', {
                 target: {
@@ -110,7 +143,7 @@ describe('SelfValidationHoc', () => {
             expect(wrapper.state('invalid')).toBe(true);
         });
 
-        it('should not mark valid element as invalid on change', () => {
+        it('should not be marked when valid as invalid on change', () => {
             const wrapper = mount(<TouchableInput required />);
             wrapper.find('input').simulate('change', {
                 target: {
@@ -122,23 +155,23 @@ describe('SelfValidationHoc', () => {
             expect(wrapper.state('invalid')).toBe(false);
         });
 
-        it('should mark invalid element as invalid on submit', () => {
+        it('should be marked when invalid as invalid on submit', () => {
             const wrapper = mount(<TouchableInput required />);
             wrapper.find('input').simulate('invalid');
             expect(wrapper.state('invalid')).toBe(true);
         });
 
-        it('should not mark valid element as invalid on submit', () => {
+        it('should not be marked when valid as invalid on submit', () => {
             const wrapper = mount(<TouchableInput />);
             expect(wrapper.state('invalid')).toBe(false);
         });
 
-        it('should not mark element as touched initially', () => {
+        it('should not be marked as touched initially', () => {
             const wrapper = mount(<TouchableInput />);
             expect(wrapper.state('touched')).toBe(false);
         });
 
-        it('should mark element as touched on change', () => {
+        it('should be marked as touched on change', () => {
             const wrapper = mount(<TouchableInput />);
             wrapper.find('input').simulate('change', {
                 target: {
@@ -148,43 +181,10 @@ describe('SelfValidationHoc', () => {
             expect(wrapper.state('touched')).toBe(true);
         });
 
-        it('should make element as touched on submit', () => {
+        it('should be marked as touched on submit', () => {
             const wrapper = mount(<TouchableInput required />);
             wrapper.find('input').simulate('invalid');
             expect(wrapper.state('touched')).toBe(true);
-        });
-
-        it('should not break on text sibling', () => {
-            const wrapper = mount(
-                <SelfValidatingForm>
-                    <div>
-                        <TouchableInput />
-                        text
-                    </div>
-                </SelfValidatingForm>,
-            );
-        });
-
-        it('should not break on null sibling', () => {
-            const wrapper = mount(
-                <SelfValidatingForm>
-                    <div>
-                        <TouchableInput />
-                        {null}
-                    </div>
-                </SelfValidatingForm>,
-            );
-        });
-
-        it('should not break on false sibling', () => {
-            const wrapper = mount(
-                <SelfValidatingForm>
-                    <div>
-                        <TouchableInput />
-                        {false}
-                    </div>
-                </SelfValidatingForm>,
-            );
         });
     });
 
